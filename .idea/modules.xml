@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DreamManager.iml" filepath="$PROJECT_DIR$/DreamManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dreamManager/dreamManager.iml" filepath="$PROJECT_DIR$/dreamManager/dreamManager.iml" />
+    </modules>
+  </component>
+</project>
