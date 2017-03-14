@@ -21,7 +21,7 @@
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.Light.NoActionBar" />
 
         <provider
             android:name=".database.DreamManagerContentProvider"
@@ -35,7 +35,9 @@
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/AppTheme.Splash" />
-        <activity android:name=".activities.SignUpActivity"></activity>
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:label="@string/title_activity_sign_up" />
     </application>
 
 </manifest>

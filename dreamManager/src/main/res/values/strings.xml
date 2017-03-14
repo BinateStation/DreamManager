@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">Dream Manager</string>
     <string name="title_activity_home">Dream Manager</string>
+    <string name="title_activity_sign_up">Sign up</string>
     <string name="name">Name</string>
     <string name="mobile_number">Mobile Number</string>
+    <string name="password_hint">Password Hint</string>
+    <string name="not_yet_registered_sign_up">Not yet registered ? Sign up.</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="name_empty_error_msg">Please enter your name here…</string>
+    <string name="mobile_number_empty_error_msg">Please enter your mobile number here…</string>
+    <string name="password_empty_error_msg">Please enter your password here…</string>
+    <string name="password_mismatch_error_msg">Password mismatch</string>
+    <string name="password_wrong_error_msg">Please check your password and try again...</string>
 </resources>
