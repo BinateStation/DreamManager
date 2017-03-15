@@ -27,6 +27,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import rkr.binatestation.dreammanager.BuildConfig;
+
 /**
  * DreamManagerContentProvider is a ContentProvider that provides videos for the rest of applications.
  */
@@ -40,7 +42,7 @@ public class DreamManagerContentProvider extends ContentProvider {
 
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = DreamManagerContract.getContentAuthority();
+        final String authority = BuildConfig.APPLICATION_ID;
 
         // For each type of URI to add, create a corresponding code.
         matcher.addURI(authority, DreamManagerContract.PATH_DREAM_LIST, DREAM_LIST);

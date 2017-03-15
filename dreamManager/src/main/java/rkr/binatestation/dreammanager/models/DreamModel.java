@@ -8,7 +8,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.util.Date;
+
 import static rkr.binatestation.dreammanager.database.DreamManagerContract.DreamListTable.COLUMN_ACHIEVE_DATE;
+import static rkr.binatestation.dreammanager.database.DreamManagerContract.DreamListTable.COLUMN_CREATED_DATE;
 import static rkr.binatestation.dreammanager.database.DreamManagerContract.DreamListTable.COLUMN_IMAGE_URI;
 import static rkr.binatestation.dreammanager.database.DreamManagerContract.DreamListTable.COLUMN_NAME;
 import static rkr.binatestation.dreammanager.database.DreamManagerContract.DreamListTable.COLUMN_PER_MONTH_AMOUNT;
@@ -33,14 +36,19 @@ public class DreamModel implements Parcelable {
     };
     private static final String TAG = "DreamModel";
     private int id;
-    private String name;
+    private String name = "";
+    private long createdDate = new Date().getTime();
     private long achieveDate;
     private double targetAmount;
     private double perMonthAmount;
     private Uri imageUri;
 
-    public DreamModel(String name, long achieveDate, double targetAmount, double perMonthAmount, Uri imageUri) {
+    public DreamModel() {
+    }
+
+    public DreamModel(String name, long createdDate, long achieveDate, double targetAmount, double perMonthAmount, Uri imageUri) {
         this.name = name;
+        this.createdDate = createdDate;
         this.achieveDate = achieveDate;
         this.targetAmount = targetAmount;
         this.perMonthAmount = perMonthAmount;
@@ -50,6 +58,7 @@ public class DreamModel implements Parcelable {
     private DreamModel(Parcel in) {
         id = in.readInt();
         name = in.readString();
+        createdDate = in.readLong();
         achieveDate = in.readLong();
         targetAmount = in.readDouble();
         perMonthAmount = in.readDouble();
@@ -76,6 +85,7 @@ public class DreamModel implements Parcelable {
         Log.d(TAG, "getContentValues() called with: dreamModel = [" + dreamModel + "]");
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, dreamModel.getName());
+        contentValues.put(COLUMN_CREATED_DATE, dreamModel.getCreatedDate());
         contentValues.put(COLUMN_ACHIEVE_DATE, dreamModel.getAchieveDate());
         contentValues.put(COLUMN_TARGET_AMOUNT, dreamModel.getTargetAmount());
         contentValues.put(COLUMN_PER_MONTH_AMOUNT, dreamModel.getPerMonthAmount());
@@ -98,6 +108,14 @@ public class DreamModel implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(long createdDate) {
+        this.createdDate = createdDate;
     }
 
     public long getAchieveDate() {
@@ -139,6 +157,7 @@ public class DreamModel implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(id);
         out.writeString(name);
+        out.writeLong(createdDate);
         out.writeLong(achieveDate);
         out.writeDouble(targetAmount);
         out.writeDouble(perMonthAmount);

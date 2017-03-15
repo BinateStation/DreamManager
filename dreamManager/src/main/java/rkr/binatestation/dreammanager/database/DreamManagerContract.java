@@ -31,8 +31,7 @@ public final class DreamManagerContract {
     // The content paths.
     static final String PATH_DREAM_LIST = "dream_list";
     // The name for the entire content provider.
-    private static final String CONTENT_AUTHORITY = "rkr.bharathi.kineticinsight";
-    private static final String CONTENT_AUTHORITY_DEBUG = CONTENT_AUTHORITY;
+    private static final String CONTENT_AUTHORITY = BuildConfig.APPLICATION_ID;
     private static final String CREATE_TABLE = " CREATE TABLE ";
     /**
      * INT,
@@ -87,30 +86,24 @@ public final class DreamManagerContract {
     private static final String CLOSE_PARENTHESIS = " ) ";
     private static final String SEMI_COLON = " ; ";
     // Base of all URIs that  will be used to contact the content provider.
-    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + getContentAuthority());
-
-    static String getContentAuthority() {
-        if (BuildConfig.DEBUG) {
-            return CONTENT_AUTHORITY_DEBUG;
-        } else {
-            return CONTENT_AUTHORITY;
-        }
-    }
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final class DreamListTable implements BaseColumns {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_DREAM_LIST).build();
         public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_CREATED_DATE = "created_date";
         public static final String COLUMN_ACHIEVE_DATE = "achieve_date";
         public static final String COLUMN_TARGET_AMOUNT = "target_amount";
         public static final String COLUMN_PER_MONTH_AMOUNT = "per_month_amount";
         public static final String COLUMN_IMAGE_URI = "image_uri";
-        static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + getContentAuthority() + "." + PATH_DREAM_LIST;
+        static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "." + PATH_DREAM_LIST;
         // Name of the workout temp table.
         static final String TABLE_NAME = PATH_DREAM_LIST;
         static final String SQL_CREATE_TABLE = CREATE_TABLE + TABLE_NAME + OPEN_PARENTHESIS +
                 _ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT + COMMA +
                 COLUMN_NAME + TEXT + COMMA +
+                COLUMN_CREATED_DATE + INTEGER + COMMA +
                 COLUMN_ACHIEVE_DATE + INTEGER + COMMA +
                 COLUMN_TARGET_AMOUNT + REAL + COMMA +
                 COLUMN_PER_MONTH_AMOUNT + REAL + COMMA +
