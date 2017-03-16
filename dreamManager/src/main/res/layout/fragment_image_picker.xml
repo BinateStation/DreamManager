@@ -13,6 +13,7 @@
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/text_margin"
         android:text="@string/choose" />
 
     <RelativeLayout

@@ -1,12 +1,14 @@
 package rkr.binatestation.dreammanager.fragments.dialog;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -76,6 +79,18 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(KEY_IMAGE_PATH, mSelectedImagePath);
         super.onSaveInstanceState(outState);
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        // request a window without the title
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.requestFeature(Window.FEATURE_NO_TITLE);
+        }
+        return dialog;
     }
 
     @Override
