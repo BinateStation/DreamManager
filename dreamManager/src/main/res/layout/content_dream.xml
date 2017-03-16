@@ -92,15 +92,11 @@
                     android:hint="@string/when_you_are_going_to_achieve_this_dream"
                     android:inputType="date"
                     android:onClick="onClick"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#212121"
                     tools:text="May 2018" />
             </android.support.design.widget.TextInputLayout>
 
 
         </RelativeLayout>
-
-        <include layout="@layout/item_divider" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -120,6 +116,7 @@
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:gravity="center"
+                android:textColor="@color/colorPrimary"
                 tools:text="$" />
 
 
@@ -157,51 +154,6 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
-                android:id="@+id/AD_amount_per_month_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:contentDescription="@string/average_amount_to_spent_per_month"
-                android:src="@drawable/ic_attach_money_black_24dp"
-                android:visibility="invisible" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@id/AD_amount_per_month_icon"
-                android:layout_toRightOf="@id/AD_amount_per_month_icon">
-
-                <EditText
-                    android:id="@+id/AD_amount_per_month"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/average_amount_to_spent_per_month"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1"
-                    android:onClick="onClick"
-                    tools:text="10,000" />
-            </android.support.design.widget.TextInputLayout>
-        </RelativeLayout>
-
-        <include layout="@layout/item_divider" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:onClick="onClick"
-            android:padding="@dimen/activity_horizontal_margin">
-
-            <ImageView
                 android:id="@+id/AD_add_money_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -210,7 +162,8 @@
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:contentDescription="@string/amount_spent_till_the_day"
-                android:src="@drawable/ic_more_percentage_plus_button_black_24dp" />
+                android:src="@drawable/ic_date_range_black_24dp"
+                android:visibility="invisible" />
 
             <ImageButton
                 android:id="@+id/AD_action_add_money"

@@ -9,7 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import rkr.binatestation.dreammanager.R;
-import rkr.binatestation.dreammanager.utils.GeneralUtils;
+import rkr.binatestation.dreammanager.fragments.dialog.AlertDialogFragment;
+import rkr.binatestation.dreammanager.models.DialogType;
 import rkr.binatestation.dreammanager.utils.SessionManager;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
@@ -74,8 +75,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (password.equals(input)) {
             navigateTo();
         } else {
-            GeneralUtils.showAlert(this, getString(android.R.string.dialog_alert_title), getString(R.string.password_wrong_error_msg));
+            showAlert();
         }
+    }
+
+    private void showAlert() {
+        AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(null, getString(R.string.password_wrong_error_msg), DialogType.POSITIVE_BUTTON);
+        alertDialogFragment.show(getSupportFragmentManager(), alertDialogFragment.getTag());
     }
 
     private void navigateTo() {

@@ -112,4 +112,10 @@
     <string name="add_money">Add Money</string>
     <string name="rupee_sign">₹</string>
     <string name="external_storage_permission_alert_msg">We need external storage permission for selecting the image</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="choose">Choose</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
 </resources>

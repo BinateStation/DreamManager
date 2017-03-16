@@ -8,9 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
@@ -31,11 +29,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.vansuita.pickimage.bean.PickResult;
-import com.vansuita.pickimage.bundle.PickSetup;
-import com.vansuita.pickimage.dialog.PickImageDialog;
-import com.vansuita.pickimage.listeners.IPickResult;
-
 import java.io.File;
 import java.util.Calendar;
 import java.util.Currency;
@@ -44,29 +37,38 @@ import java.util.Locale;
 
 import rkr.binatestation.dreammanager.R;
 import rkr.binatestation.dreammanager.database.DbActionsIntentService;
+import rkr.binatestation.dreammanager.fragments.dialog.AlertDialogFragment;
+import rkr.binatestation.dreammanager.fragments.dialog.ImagePickerFragment;
+import rkr.binatestation.dreammanager.models.DialogType;
 import rkr.binatestation.dreammanager.models.DreamModel;
 
 import static rkr.binatestation.dreammanager.database.DbActionsIntentService.RESULT_CODE_SUCCESS;
-import static rkr.binatestation.dreammanager.utils.GeneralUtils.copyFile;
 import static rkr.binatestation.dreammanager.utils.GeneralUtils.monthsBetweenDates;
 import static rkr.binatestation.dreammanager.utils.GeneralUtils.showAlert;
 
-public class DreamActivity extends AppCompatActivity implements View.OnClickListener, TextView.OnEditorActionListener, DatePickerDialog.OnDateSetListener, IPickResult {
+public class DreamActivity extends AppCompatActivity implements View.OnClickListener,
+        TextView.OnEditorActionListener, DatePickerDialog.OnDateSetListener, DialogInterface.OnClickListener, ImagePickerFragment.ImagePickerListener {
 
+    public static final String KEY_IMAGE_PATH = "image_path";
     private static final String TAG = "DreamActivity";
-
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
     private AppCompatImageView mDreamImageView;
     private EditText mDreamNameEditText;
     private EditText mDateToAchieveEditText;
     private EditText mAmountEditText;
-    private EditText mAmountPerMonthEditText;
     private EditText mAmountSpentTillDayEditText;
     private TextView mAmountIconTextView;
 
     private DreamModel mDreamModel = new DreamModel();
+    private String mImageFilePath = "";
     private Handler mHandler = new Handler();
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(KEY_IMAGE_PATH, mImageFilePath);
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +85,17 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
         mDreamNameEditText = (EditText) findViewById(R.id.AD_dream_name);
         mDateToAchieveEditText = (EditText) findViewById(R.id.AD_date);
         mAmountEditText = (EditText) findViewById(R.id.AD_amount);
-        mAmountPerMonthEditText = (EditText) findViewById(R.id.AD_amount_per_month);
         mAmountSpentTillDayEditText = (EditText) findViewById(R.id.AD_add_money);
         mAmountIconTextView = (TextView) findViewById(R.id.AD_amount_icon);
 
         mDreamNameEditText.setOnEditorActionListener(this);
         mAmountEditText.setOnEditorActionListener(this);
         mDreamImageView.setOnClickListener(this);
+
+        if (savedInstanceState != null) {
+            mImageFilePath = savedInstanceState.getString(KEY_IMAGE_PATH);
+            setImageView();
+        }
 
         setCurrencySymbol();
     }
@@ -105,7 +111,7 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
         if (v.getId() == R.id.AD_date || v.getId() == R.id.AD_date_layout) {
             showDatePicker();
         } else if (v.getId() == R.id.AD_dream_image) {
-            checkPermissionBeforeSaveImage();
+            checkPermissionBeforePickImage();
         } else if (v.getId() == R.id.AD_action_done) {
             validateInputs();
         }
@@ -197,7 +203,6 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
             mDreamModel.setTargetAmount(amountDouble);
             int noOfMonths = monthsBetweenDates(new Date(mDreamModel.getCreatedDate()), new Date(mDreamModel.getAchieveDate()));
             mDreamModel.setPerMonthAmount(amountDouble / noOfMonths);
-            mAmountPerMonthEditText.setText(String.format(Locale.getDefault(), "%.2f", mDreamModel.getPerMonthAmount()));
         }
     }
 
@@ -220,40 +225,26 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                PickImageDialog.build(new PickSetup()).show(DreamActivity.this).setOnPickResult(DreamActivity.this);
+                ImagePickerFragment imagePickerFragment = ImagePickerFragment.newInstance();
+                imagePickerFragment.show(getSupportFragmentManager(), imagePickerFragment.getTag());
             }
         });
     }
 
-    @Override
-    public void onPickResult(PickResult pickResult) {
-        Throwable exception = pickResult.getError();
-        if (exception == null) {
-            File file = new File(pickResult.getPath());
-            if (file.exists() && file.isFile()) {
-                File destination = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), file.getName());
-                copyFile(file, destination);
-                if (destination.exists() && destination.isFile()) {
-                    Uri uri = Uri.fromFile(destination);
-                    mDreamModel.setImageUri(uri);
-                    setImageView(destination);
-                }
+    private void setImageView() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bitmap = BitmapFactory.decodeFile(mImageFilePath);
+                int width = mDreamImageView.getWidth();
+                int height = mDreamImageView.getHeight();
+                Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, width, height);
+                mDreamImageView.setImageBitmap(resized);
             }
-        } else {
-            Log.e(TAG, "onPickResult: ", exception);
-        }
-
+        });
     }
 
-    private void setImageView(File file) {
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-        int width = mDreamImageView.getWidth();
-        int height = mDreamImageView.getHeight();
-        Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, width, height);
-        mDreamImageView.setImageBitmap(resized);
-    }
-
-    private void checkPermissionBeforeSaveImage() {
+    private void checkPermissionBeforePickImage() {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -311,20 +302,36 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                showAlert(DreamActivity.this, getString(android.R.string.dialog_alert_title), getString(R.string.external_storage_permission_alert_msg), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == DialogInterface.BUTTON_POSITIVE) {
-                            ActivityCompat.requestPermissions(DreamActivity.this,
-                                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                    PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-
-                        }
-                    }
-                });
+                AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(null, getString(R.string.external_storage_permission_alert_msg), DialogType.POSITIVE_NEGATIVE_BUTTON);
+                alertDialogFragment.show(getSupportFragmentManager(), alertDialogFragment.getTag());
             }
         });
     }
 
 
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            ActivityCompat.requestPermissions(DreamActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+
+        }
+        dialog.dismiss();
+    }
+
+    @Override
+    public void onImagePicked(String imageFilePath) {
+        if (!TextUtils.isEmpty(imageFilePath)) {
+            File file = new File(imageFilePath);
+            if (file.exists() && file.isFile()) {
+                mDreamModel.setImagePath(imageFilePath);
+                mImageFilePath = imageFilePath;
+                setImageView();
+            }
+        } else {
+            Log.e(TAG, "onPickResult: " + imageFilePath);
+        }
+
+    }
 }

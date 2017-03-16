@@ -41,18 +41,18 @@ public class DreamModel implements Parcelable {
     private long achieveDate;
     private double targetAmount;
     private double perMonthAmount;
-    private Uri imageUri;
+    private String imagePath;
 
     public DreamModel() {
     }
 
-    public DreamModel(String name, long createdDate, long achieveDate, double targetAmount, double perMonthAmount, Uri imageUri) {
+    public DreamModel(String name, long createdDate, long achieveDate, double targetAmount, double perMonthAmount, String imagePath) {
         this.name = name;
         this.createdDate = createdDate;
         this.achieveDate = achieveDate;
         this.targetAmount = targetAmount;
         this.perMonthAmount = perMonthAmount;
-        this.imageUri = imageUri;
+        this.imagePath = imagePath;
     }
 
     private DreamModel(Parcel in) {
@@ -62,7 +62,7 @@ public class DreamModel implements Parcelable {
         achieveDate = in.readLong();
         targetAmount = in.readDouble();
         perMonthAmount = in.readDouble();
-        imageUri = in.readParcelable(Uri.class.getClassLoader());
+        imagePath = in.readString();
     }
 
     public static long insert(ContentResolver contentResolver, DreamModel dreamModel) {
@@ -89,7 +89,7 @@ public class DreamModel implements Parcelable {
         contentValues.put(COLUMN_ACHIEVE_DATE, dreamModel.getAchieveDate());
         contentValues.put(COLUMN_TARGET_AMOUNT, dreamModel.getTargetAmount());
         contentValues.put(COLUMN_PER_MONTH_AMOUNT, dreamModel.getPerMonthAmount());
-        contentValues.put(COLUMN_IMAGE_URI, dreamModel.getImageUri().toString());
+        contentValues.put(COLUMN_IMAGE_URI, dreamModel.getImagePath() != null ? dreamModel.getImagePath().toString() : "");
         Log.d(TAG, "getContentValues() returned: " + contentValues);
         return contentValues;
     }
@@ -142,12 +142,12 @@ public class DreamModel implements Parcelable {
         this.perMonthAmount = perMonthAmount;
     }
 
-    public Uri getImageUri() {
-        return imageUri;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public int describeContents() {
@@ -161,6 +161,6 @@ public class DreamModel implements Parcelable {
         out.writeLong(achieveDate);
         out.writeDouble(targetAmount);
         out.writeDouble(perMonthAmount);
-        out.writeParcelable(imageUri, flags);
+        out.writeString(imagePath);
     }
 }

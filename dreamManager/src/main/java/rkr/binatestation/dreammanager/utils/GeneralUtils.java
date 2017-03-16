@@ -31,15 +31,6 @@ public class GeneralUtils {
         builder.show();
     }
 
-    public static void showAlert(Context context, String title, String message, DialogInterface.OnClickListener onClickListener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setPositiveButton(android.R.string.ok, onClickListener);
-        builder.setNegativeButton(android.R.string.cancel, onClickListener);
-        builder.show();
-    }
-
     public static int monthsBetweenDates(Date startDate, Date endDate) {
         Calendar start = Calendar.getInstance();
         start.setTime(startDate);
