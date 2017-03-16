@@ -171,10 +171,6 @@ public class DreamModel implements Parcelable {
         return createdDate;
     }
 
-    public void setCreatedDate(long createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public long getAchieveDate() {
         return achieveDate;
     }
