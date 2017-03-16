@@ -97,13 +97,13 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void notifyDataSetChanged(List<DreamModel> dreamModelList) {
-        hideProgress();
         if (mDreamListAdapter != null && dreamModelList.size() > 0) {
             hideEmptyView();
             mDreamListAdapter.setDreamModelList(dreamModelList);
         } else {
             showEmptyView();
         }
+        hideProgress();
     }
 
     @Override

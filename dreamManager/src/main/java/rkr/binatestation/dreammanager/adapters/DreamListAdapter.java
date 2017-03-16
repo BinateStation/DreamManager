@@ -66,10 +66,15 @@ public class DreamListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    private void setImageView(ImageView mDreamImageView, String imagePath) {
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-        Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, 100, 100);
-        mDreamImageView.setImageBitmap(resized);
+    private void setImageView(final ImageView mDreamImageView, final String imagePath) {
+        mDreamImageView.post(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, 100, 100);
+                mDreamImageView.setImageBitmap(resized);
+            }
+        });
     }
 
 
