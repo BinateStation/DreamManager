@@ -165,7 +165,7 @@
                 android:src="@drawable/ic_date_range_black_24dp"
                 android:visibility="invisible" />
 
-            <ImageButton
+            <android.support.design.widget.FloatingActionButton
                 android:id="@+id/AD_action_add_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -174,9 +174,10 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:background="@drawable/ic_add_circle_outline_black_24dp"
                 android:contentDescription="@string/add_money"
-                android:onClick="onClick" />
+                android:onClick="onClick"
+                android:src="@drawable/ic_add_circle_outline_white_24dp"
+                app:fabSize="mini" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="wrap_content"

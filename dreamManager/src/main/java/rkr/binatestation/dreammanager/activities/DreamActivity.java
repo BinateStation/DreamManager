@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -22,6 +23,8 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -37,19 +40,21 @@ import java.util.Locale;
 
 import rkr.binatestation.dreammanager.R;
 import rkr.binatestation.dreammanager.database.DbActionsIntentService;
+import rkr.binatestation.dreammanager.fragments.dialog.AddAmountFragment;
 import rkr.binatestation.dreammanager.fragments.dialog.AlertDialogFragment;
 import rkr.binatestation.dreammanager.fragments.dialog.ImagePickerFragment;
 import rkr.binatestation.dreammanager.models.DialogType;
 import rkr.binatestation.dreammanager.models.DreamModel;
 
 import static rkr.binatestation.dreammanager.database.DbActionsIntentService.RESULT_CODE_SUCCESS;
+import static rkr.binatestation.dreammanager.utils.Constants.KEY_DREAM_MODEL;
 import static rkr.binatestation.dreammanager.utils.GeneralUtils.monthsBetweenDates;
 import static rkr.binatestation.dreammanager.utils.GeneralUtils.showAlert;
 
 public class DreamActivity extends AppCompatActivity implements View.OnClickListener,
-        TextView.OnEditorActionListener, DatePickerDialog.OnDateSetListener, DialogInterface.OnClickListener, ImagePickerFragment.ImagePickerListener {
+        TextView.OnEditorActionListener, DatePickerDialog.OnDateSetListener,
+        DialogInterface.OnClickListener, ImagePickerFragment.ImagePickerListener, AddAmountFragment.AddAmountListener {
 
-    public static final String KEY_IMAGE_PATH = "image_path";
     private static final String TAG = "DreamActivity";
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
@@ -61,12 +66,11 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
     private TextView mAmountIconTextView;
 
     private DreamModel mDreamModel = new DreamModel();
-    private String mImageFilePath = "";
     private Handler mHandler = new Handler();
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(KEY_IMAGE_PATH, mImageFilePath);
+        outState.putParcelable(KEY_DREAM_MODEL, mDreamModel);
         super.onSaveInstanceState(outState);
     }
 
@@ -81,6 +85,9 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        if (getIntent().hasExtra(KEY_DREAM_MODEL)) {
+            mDreamModel = getIntent().getParcelableExtra(KEY_DREAM_MODEL);
+        }
         mDreamImageView = (AppCompatImageView) findViewById(R.id.AD_dream_image);
         mDreamNameEditText = (EditText) findViewById(R.id.AD_dream_name);
         mDateToAchieveEditText = (EditText) findViewById(R.id.AD_date);
@@ -93,11 +100,60 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
         mDreamImageView.setOnClickListener(this);
 
         if (savedInstanceState != null) {
-            mImageFilePath = savedInstanceState.getString(KEY_IMAGE_PATH);
+            mDreamModel = savedInstanceState.getParcelable(KEY_DREAM_MODEL);
             setImageView();
         }
 
         setCurrencySymbol();
+        setView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (mDreamModel.getId() == 0) {
+            return super.onCreateOptionsMenu(menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_delete, menu);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.MD_action_delete) {
+            actionDelete();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void actionDelete() {
+        File file = new File(mDreamModel.getImagePath());
+        DreamModel.delete(getContentResolver(), mDreamModel.getId());
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                Log.d(TAG, "actionDelete: File Deleted !");
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            onNavigateUp();
+        } else {
+            finish();
+        }
+    }
+
+    private void setView() {
+        if (mDreamModel.getId() != 0) {
+            mDreamNameEditText.setText(mDreamModel.getName());
+            mDateToAchieveEditText.setText(String.format(Locale.getDefault(), "On %s", DateUtils.formatDateTime(
+                    this,
+                    mDreamModel.getAchieveDate(),
+                    DateUtils.FORMAT_NO_MONTH_DAY)
+            ));
+            mAmountEditText.setText(String.format(Locale.getDefault(), "%.2f", mDreamModel.getTargetAmount()));
+            mAmountSpentTillDayEditText.setText(String.format(Locale.getDefault(), "%.2f", mDreamModel.getAmountSpentTillDay()));
+            setImageView();
+        }
     }
 
     private void setCurrencySymbol() {
@@ -114,7 +170,19 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
             checkPermissionBeforePickImage();
         } else if (v.getId() == R.id.AD_action_done) {
             validateInputs();
+        } else if (v.getId() == R.id.AD_action_add_money) {
+            showAddAmount();
         }
+    }
+
+    private void showAddAmount() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                AddAmountFragment addAmountFragment = AddAmountFragment.newInstance();
+                addAmountFragment.show(getSupportFragmentManager(), addAmountFragment.getTag());
+            }
+        });
     }
 
     private void validateInputs() {
@@ -142,7 +210,11 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
                 if (resultCode == RESULT_CODE_SUCCESS) {
-                    finish();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        onNavigateUp();
+                    } else {
+                        finish();
+                    }
                 }
             }
         });
@@ -211,11 +283,11 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, dayOfMonth);
         mDreamModel.setAchieveDate(calendar.getTimeInMillis());
-        mDateToAchieveEditText.setText(String.format(Locale.getDefault(), "On %s", DateUtils.formatDateRange(
+        mDateToAchieveEditText.setText(String.format(Locale.getDefault(), "On %s", DateUtils.formatDateTime(
                 this,
                 mDreamModel.getAchieveDate(),
-                mDreamModel.getAchieveDate(),
-                DateUtils.FORMAT_NO_MONTH_DAY)));
+                DateUtils.FORMAT_NO_MONTH_DAY)
+        ));
         mAmountEditText.requestFocus();
         calculateAmountToSpentPerMonth();
     }
@@ -235,7 +307,7 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = BitmapFactory.decodeFile(mImageFilePath);
+                Bitmap bitmap = BitmapFactory.decodeFile(mDreamModel.getImagePath());
                 int width = mDreamImageView.getWidth();
                 int height = mDreamImageView.getHeight();
                 Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, width, height);
@@ -326,12 +398,17 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
             File file = new File(imageFilePath);
             if (file.exists() && file.isFile()) {
                 mDreamModel.setImagePath(imageFilePath);
-                mImageFilePath = imageFilePath;
                 setImageView();
             }
         } else {
             Log.e(TAG, "onPickResult: " + imageFilePath);
         }
 
+    }
+
+    @Override
+    public void done(double amount) {
+        mDreamModel.setAmountSpentTillDay(mDreamModel.getAmountSpentTillDay() + amount);
+        mAmountSpentTillDayEditText.setText(String.format(Locale.getDefault(), "%.2f", mDreamModel.getAmountSpentTillDay()));
     }
 }

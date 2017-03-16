@@ -96,6 +96,7 @@ public final class DreamManagerContract {
         public static final String COLUMN_ACHIEVE_DATE = "achieve_date";
         public static final String COLUMN_TARGET_AMOUNT = "target_amount";
         public static final String COLUMN_PER_MONTH_AMOUNT = "per_month_amount";
+        public static final String COLUMN_AMOUNT_SPENT_TILL_DAY = "amount_spent_till_day";
         public static final String COLUMN_IMAGE_URI = "image_uri";
         static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "." + PATH_DREAM_LIST;
         // Name of the workout temp table.
@@ -103,10 +104,11 @@ public final class DreamManagerContract {
         static final String SQL_CREATE_TABLE = CREATE_TABLE + TABLE_NAME + OPEN_PARENTHESIS +
                 _ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT + COMMA +
                 COLUMN_NAME + TEXT + COMMA +
-                COLUMN_CREATED_DATE + INTEGER + COMMA +
+                COLUMN_CREATED_DATE + INTEGER + UNIQUE + COMMA +
                 COLUMN_ACHIEVE_DATE + INTEGER + COMMA +
                 COLUMN_TARGET_AMOUNT + REAL + COMMA +
                 COLUMN_PER_MONTH_AMOUNT + REAL + COMMA +
+                COLUMN_AMOUNT_SPENT_TILL_DAY + REAL + COMMA +
                 COLUMN_IMAGE_URI + TEXT +
                 CLOSE_PARENTHESIS + SEMI_COLON;
 

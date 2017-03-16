@@ -6,4 +6,5 @@
     <dimen name="label_margin">4dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="app_bar_height">218dp</dimen>
+    <dimen name="item_image_size">100dp</dimen>
 </resources>

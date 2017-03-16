@@ -18,12 +18,14 @@
     <string name="name_your_dream">Name your Dream…</string>
     <string name="when_you_are_going_to_achieve_this_dream">When you are going to achieve this dream?</string>
     <string name="how_much_it_costs_to_achieve_this_dream">How much it costs to achieve this dream?</string>
-    <string name="average_amount_to_spent_per_month">Average amount to spent per month.</string>
     <string name="amount_spent_till_the_day">Amount spent till the day</string>
     <string name="add_money">Add Money</string>
-    <string name="rupee_sign">₹</string>
     <string name="external_storage_permission_alert_msg">We need external storage permission for selecting the image</string>
     <string name="choose">Choose</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
+    <string name="no_dreams_yet_create_your_dream">No dreams yet? create your dream now.</string>
+    <string name="how_much_you_are_going_to_spent_today">How much you are going to spent today?</string>
+    <string name="done">Done</string>
+    <string name="delete">Delete</string>
 </resources>
