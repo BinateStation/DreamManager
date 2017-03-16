@@ -8,80 +8,117 @@
     app:cardElevation="@dimen/cardview_default_elevation"
     app:cardUseCompatPadding="true">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/item_image_size"
         android:background="?attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/ADI_dream_image"
             android:layout_width="100dp"
-            android:layout_height="@dimen/item_image_size"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/label_margin"
-            android:layout_marginRight="@dimen/label_margin"
+            android:layout_height="100dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:contentDescription="@string/title_activity_dream"
-            android:src="@drawable/ic_dream_manager_logo" />
-
-        <TextView
-            android:id="@+id/ADI_target_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/label_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            tools:text="10,00,000" />
+            android:src="@drawable/ic_dream_manager_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/ADI_dream_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/label_margin"
-            android:layout_toEndOf="@id/ADI_dream_image"
-            android:layout_toLeftOf="@id/ADI_target_amount"
-            android:layout_toRightOf="@id/ADI_dream_image"
-            android:layout_toStartOf="@id/ADI_target_amount"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toTopOf="@+id/ADI_achieve_on"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/ADI_dream_image"
+            app:layout_constraintRight_toLeftOf="@+id/ADI_target_amount"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="Dream 1" />
-
-        <TextView
-            android:id="@+id/ADI_to_spent_per_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/ADI_target_amount"
-            android:layout_margin="@dimen/label_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            tools:text="1000.50" />
 
         <TextView
             android:id="@+id/ADI_achieve_on"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/ADI_dream_name"
-            android:layout_alignStart="@id/ADI_dream_name"
-            android:layout_below="@id/ADI_dream_name"
-            android:layout_marginTop="@dimen/label_margin"
-            android:layout_toLeftOf="@id/ADI_to_spent_per_month"
-            android:layout_toStartOf="@id/ADI_to_spent_per_month"
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toTopOf="@+id/ADI_dream_progress"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/ADI_dream_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             tools:text="achieve on march 2020" />
+
+
+        <TextView
+            android:id="@+id/ADI_target_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@+id/ADI_dream_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10,00,000" />
+
+
+        <TextView
+            android:id="@+id/ADI_to_spent_per_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toTopOf="@+id/ADI_achieve_on"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@+id/ADI_dream_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ADI_target_amount"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="1000.50" />
 
 
         <ProgressBar
             android:id="@+id/ADI_dream_progress"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@id/ADI_achieve_on"
-            android:layout_margin="@dimen/label_margin"
-            android:layout_toEndOf="@id/ADI_dream_image"
-            android:layout_toRightOf="@id/ADI_dream_image"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@+id/ADI_dream_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.99"
             tools:progress="50" />
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
