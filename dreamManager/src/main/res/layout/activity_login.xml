@@ -21,7 +21,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.204">
+        app:layout_constraintVertical_bias="0.031">
 
         <EditText
             android:id="@+id/AL_password_1"
@@ -31,7 +31,8 @@
             android:ems="1"
             android:gravity="center"
             android:inputType="numberPassword"
-            android:maxLength="1" />
+            android:maxLength="1"
+            tools:text="2" />
 
         <EditText
             android:id="@+id/AL_password_2"
@@ -41,7 +42,8 @@
             android:ems="1"
             android:gravity="center"
             android:inputType="numberPassword"
-            android:maxLength="1" />
+            android:maxLength="1"
+            tools:text="2" />
 
         <EditText
             android:id="@+id/AL_password_3"
@@ -51,7 +53,8 @@
             android:ems="1"
             android:gravity="center"
             android:inputType="numberPassword"
-            android:maxLength="1" />
+            android:maxLength="1"
+            tools:text="2" />
 
         <EditText
             android:id="@+id/AL_password_4"
@@ -96,5 +99,6 @@
         app:layout_constraintLeft_toLeftOf="@+id/AL_password_layout"
         app:layout_constraintRight_toRightOf="@+id/AL_password_layout"
         app:layout_constraintTop_toBottomOf="@+id/AL_password_layout"
-        app:layout_constraintVertical_bias="0.059" />
+        app:layout_constraintVertical_bias="0.059"
+        tools:text="Forgot password ! Help me" />
 </android.support.constraint.ConstraintLayout>
