@@ -80,9 +80,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void showAlert() {
+        clearFields();
         AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(null, getString(R.string.password_wrong_error_msg), DialogType.POSITIVE_BUTTON);
         alertDialogFragment.show(getSupportFragmentManager(), alertDialogFragment.getTag());
     }
+
+    private void clearFields() {
+        mPassword1.setText("");
+        mPassword2.setText("");
+        mPassword3.setText("");
+        mPassword4.setText("");
+    }
+
 
     private void navigateTo() {
         startActivity(new Intent(this, HomeActivity.class));

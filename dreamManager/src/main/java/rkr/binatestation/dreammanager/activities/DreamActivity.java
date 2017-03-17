@@ -30,6 +30,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.File;
@@ -64,6 +65,7 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
     private EditText mAmountEditText;
     private EditText mAmountSpentTillDayEditText;
     private TextView mAmountIconTextView;
+    private ProgressBar mProgressBar;
 
     private DreamModel mDreamModel = new DreamModel();
     private Handler mHandler = new Handler();
@@ -94,6 +96,7 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
         mAmountEditText = (EditText) findViewById(R.id.AD_amount);
         mAmountSpentTillDayEditText = (EditText) findViewById(R.id.AD_add_money);
         mAmountIconTextView = (TextView) findViewById(R.id.AD_amount_icon);
+        mProgressBar = (ProgressBar) findViewById(R.id.AD_progress_bar);
 
         mDreamNameEditText.setOnEditorActionListener(this);
         mAmountEditText.setOnEditorActionListener(this);
@@ -169,10 +172,15 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
         } else if (v.getId() == R.id.AD_dream_image) {
             checkPermissionBeforePickImage();
         } else if (v.getId() == R.id.AD_action_done) {
+            showProgress();
             validateInputs();
         } else if (v.getId() == R.id.AD_action_add_money) {
             showAddAmount();
         }
+    }
+
+    private void showProgress() {
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void showAddAmount() {
@@ -186,22 +194,30 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void validateInputs() {
+        calculateAmountToSpentPerMonth();
         String name = mDreamNameEditText.getText().toString();
         String date = mDateToAchieveEditText.getText().toString();
         String amount = mAmountEditText.getText().toString();
         if (TextUtils.isEmpty(name)) {
             mDreamNameEditText.setError(getString(R.string.name_your_dream));
             mDreamNameEditText.requestFocus();
+            hideProgress();
         } else if (TextUtils.isEmpty(date)) {
             mDateToAchieveEditText.setError(getString(R.string.when_you_are_going_to_achieve_this_dream));
             mDateToAchieveEditText.requestFocus();
+            hideProgress();
         } else if (TextUtils.isEmpty(amount)) {
             mAmountEditText.setError(getString(R.string.how_much_it_costs_to_achieve_this_dream));
             mAmountEditText.requestFocus();
+            hideProgress();
         } else {
             mDreamModel.setName(name);
             saveDream();
         }
+    }
+
+    private void hideProgress() {
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private void saveDream() {
@@ -216,6 +232,7 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
                         finish();
                     }
                 }
+                hideProgress();
             }
         });
     }
@@ -268,7 +285,7 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
         Log.d(TAG, "calculateAmountToSpentPerMonth() called");
         String amount = mAmountEditText.getText().toString();
         double amountDouble = 0;
-        if ((!TextUtils.isEmpty(amount)) && TextUtils.isDigitsOnly(amount)) {
+        if ((!TextUtils.isEmpty(amount))) {
             amountDouble = Double.parseDouble(amount);
         }
         if (mDreamModel.getAchieveDate() > 0 && amountDouble > 0) {

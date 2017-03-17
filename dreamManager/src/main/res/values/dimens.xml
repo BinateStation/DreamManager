@@ -7,4 +7,5 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="app_bar_height">218dp</dimen>
     <dimen name="item_image_size">100dp</dimen>
+    <dimen name="anchor_progress_bar_size">70dp</dimen>
 </resources>

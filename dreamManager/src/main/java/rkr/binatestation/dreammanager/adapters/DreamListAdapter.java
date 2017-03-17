@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -73,6 +74,9 @@ public class DreamListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
                 Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, 100, 100);
                 mDreamImageView.setImageBitmap(resized);
+                if (resized == null) {
+                    mDreamImageView.setImageDrawable(ContextCompat.getDrawable(mDreamImageView.getContext(), R.drawable.ic_image_black_24dp));
+                }
             }
         });
     }

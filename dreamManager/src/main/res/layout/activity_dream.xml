@@ -66,4 +66,11 @@
         app:layout_anchor="@id/AD_content_dream"
         app:layout_anchorGravity="top|end" />
 
+    <ProgressBar
+        android:id="@+id/AD_progress_bar"
+        android:layout_width="@dimen/anchor_progress_bar_size"
+        android:layout_height="@dimen/anchor_progress_bar_size"
+        android:visibility="gone"
+        app:layout_anchor="@id/AD_action_done"
+        app:layout_anchorGravity="center" />
 </android.support.design.widget.CoordinatorLayout>
