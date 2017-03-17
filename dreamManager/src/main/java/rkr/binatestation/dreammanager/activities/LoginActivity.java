@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import rkr.binatestation.dreammanager.R;
 import rkr.binatestation.dreammanager.fragments.dialog.AlertDialogFragment;
@@ -31,6 +32,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mPassword2.addTextChangedListener(this);
         mPassword3.addTextChangedListener(this);
         mPassword4.addTextChangedListener(this);
+
+        TextView passwordHintTextView = (TextView) findViewById(R.id.AL_password_hint);
+        passwordHintTextView.setText(String.format("%s %s %s", getString(R.string.forgot_password), getEmojiByUnicode(0x1F61E), getString(R.string.help_me)));
     }
 
     @Override
@@ -38,7 +42,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (v.getId() == R.id.AL_action_sign_up) {
             startActivity(new Intent(this, SignUpActivity.class));
             finish();
+        } else if (v.getId() == R.id.AL_password_hint) {
+            showPasswordHint();
         }
+    }
+
+    public String getEmojiByUnicode(int unicode) {
+        return new String(Character.toChars(unicode));
+    }
+
+    private void showPasswordHint() {
+        String passwordHint = SessionManager.getPasswordHint(this);
+        AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(getString(R.string.password_hint), passwordHint, DialogType.POSITIVE_BUTTON);
+        alertDialogFragment.show(getSupportFragmentManager(), alertDialogFragment.getTag());
+
     }
 
     @Override

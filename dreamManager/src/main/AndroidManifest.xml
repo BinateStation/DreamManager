@@ -36,7 +36,7 @@
 
         <activity
             android:name=".activities.LoginActivity"
-            android:theme="@style/AppTheme.Splash" />
+            android:theme="@style/AppTheme.Light.Login" />
         <activity
             android:name=".activities.SignUpActivity"
             android:label="@string/title_activity_sign_up" />

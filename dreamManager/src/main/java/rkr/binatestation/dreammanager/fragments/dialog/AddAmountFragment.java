@@ -9,18 +9,21 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import rkr.binatestation.dreammanager.R;
 
 /**
  * Dialog fragment to add the amount
  */
-public class AddAmountFragment extends DialogFragment implements View.OnClickListener {
+public class AddAmountFragment extends DialogFragment implements View.OnClickListener, TextView.OnEditorActionListener {
 
     private static final String TAG = "AddAmountFragment";
 
@@ -79,6 +82,7 @@ public class AddAmountFragment extends DialogFragment implements View.OnClickLis
         mAmountEditText = (EditText) view.findViewById(R.id.FAM_input_box);
         View actionDoneView = view.findViewById(R.id.FAM_action_done);
         actionDoneView.setOnClickListener(this);
+        mAmountEditText.setOnEditorActionListener(this);
     }
 
     @Override
@@ -96,6 +100,14 @@ public class AddAmountFragment extends DialogFragment implements View.OnClickLis
             mAddAmountListener.done(amount);
         }
         dismiss();
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            validateInput();
+        }
+        return false;
     }
 
     public interface AddAmountListener {

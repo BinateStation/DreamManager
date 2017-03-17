@@ -60,7 +60,7 @@ public class DreamListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             itemHolder.mDreamNameTextView.setText(dreamModel.getName());
             itemHolder.mAchieveOnTextView.setText(String.format("Likely to achieve on %s", DateUtils.formatDateTime(context, dreamModel.getAchieveDate(), DateUtils.FORMAT_NO_MONTH_DAY)));
             itemHolder.mTargetAmount.setText(String.format(Locale.getDefault(), "%s%.2f", mCurrency.getSymbol(), dreamModel.getTargetAmount()));
-            itemHolder.mPerMonthCost.setText(String.format(Locale.getDefault(), "%s%.2f/Month", mCurrency.getSymbol(), dreamModel.getPerMonthAmount()));
+            itemHolder.mPerMonthCost.setText(String.format(Locale.getDefault(), "Save %s%.2f/Month", mCurrency.getSymbol(), dreamModel.getPerMonthAmount()));
             itemHolder.mProgressBar.setMax((int) dreamModel.getTargetAmount());
             itemHolder.mProgressBar.setProgress((int) dreamModel.getAmountSpentTillDay());
             setImageView(itemHolder.mDreamImageView, dreamModel.getImagePath());

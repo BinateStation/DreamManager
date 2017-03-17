@@ -33,13 +33,23 @@ public class SessionManager {
     }
 
     /**
-     * gets the logged in instructor id from session
+     * gets the login password from session
      *
      * @param context the context from where this called
      * @return the password string
      */
     public static String getPassword(Context context) {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getString(KEY_PASSWORD, "");
+    }
+
+    /**
+     * gets the login password hint from session
+     *
+     * @param context the context from where this called
+     * @return the password Hint string
+     */
+    public static String getPasswordHint(Context context) {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getString(KEY_PASSWORD_HINT, "");
     }
 
 

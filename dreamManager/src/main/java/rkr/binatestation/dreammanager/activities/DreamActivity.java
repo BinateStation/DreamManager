@@ -329,6 +329,9 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
                 int height = mDreamImageView.getHeight();
                 Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, width, height);
                 mDreamImageView.setImageBitmap(resized);
+                if (resized == null) {
+                    mDreamImageView.setImageDrawable(ContextCompat.getDrawable(mDreamImageView.getContext(), R.drawable.ic_add_a_photo_white_24dp));
+                }
             }
         });
     }

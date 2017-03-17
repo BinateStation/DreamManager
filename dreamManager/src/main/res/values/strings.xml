@@ -28,4 +28,6 @@
     <string name="how_much_you_are_going_to_spent_today">How much you are going to spent today?</string>
     <string name="done">Done</string>
     <string name="delete">Delete</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="help_me">Help me</string>
 </resources>
