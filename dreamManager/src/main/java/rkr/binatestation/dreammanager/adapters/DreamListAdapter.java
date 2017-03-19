@@ -85,10 +85,12 @@ public class DreamListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             @Override
             public void run() {
                 Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, 100, 100);
+                Context context = mDreamImageView.getContext();
+                int dimen = (int) context.getResources().getDimension(R.dimen.item_image_size);
+                Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, dimen, dimen);
                 mDreamImageView.setImageBitmap(resized);
                 if (resized == null) {
-                    mDreamImageView.setImageDrawable(ContextCompat.getDrawable(mDreamImageView.getContext(), R.drawable.ic_image_black_24dp));
+                    mDreamImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_image_black_24dp));
                 }
             }
         });
