@@ -8,6 +8,7 @@ import android.media.ThumbnailUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Currency;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,6 +27,7 @@ import rkr.binatestation.dreammanager.activities.DreamActivity;
 import rkr.binatestation.dreammanager.models.DreamModel;
 
 import static rkr.binatestation.dreammanager.utils.Constants.KEY_DREAM_MODEL;
+import static rkr.binatestation.dreammanager.utils.GeneralUtils.monthsBetweenDates;
 
 /**
  * Created by RKR on 16-03-2017.
@@ -32,6 +35,7 @@ import static rkr.binatestation.dreammanager.utils.Constants.KEY_DREAM_MODEL;
  */
 
 public class DreamListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final String TAG = "DreamListAdapter";
     private Currency mCurrency;
     private List<DreamModel> mDreamModelList = new ArrayList<>();
 
@@ -59,12 +63,21 @@ public class DreamListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Context context = itemHolder.itemView.getContext();
             itemHolder.mDreamNameTextView.setText(dreamModel.getName());
             itemHolder.mAchieveOnTextView.setText(String.format("Likely to achieve on %s", DateUtils.formatDateTime(context, dreamModel.getAchieveDate(), DateUtils.FORMAT_NO_MONTH_DAY)));
-            itemHolder.mTargetAmount.setText(String.format(Locale.getDefault(), "%s%.2f", mCurrency.getSymbol(), dreamModel.getTargetAmount()));
-            itemHolder.mPerMonthCost.setText(String.format(Locale.getDefault(), "Save %s%.2f/Month", mCurrency.getSymbol(), dreamModel.getPerMonthAmount()));
+            itemHolder.mTargetAmount.setText(String.format(Locale.getDefault(), "%s%.2f/%.2f", mCurrency.getSymbol(), dreamModel.getAmountSpentTillDay(), dreamModel.getTargetAmount()));
+            itemHolder.mPerMonthCost.setText(String.format(Locale.getDefault(), "Save %s%.2f/Month", mCurrency.getSymbol(), calculateAmountToSpentPerMonth(dreamModel)));
             itemHolder.mProgressBar.setMax((int) dreamModel.getTargetAmount());
             itemHolder.mProgressBar.setProgress((int) dreamModel.getAmountSpentTillDay());
             setImageView(itemHolder.mDreamImageView, dreamModel.getImagePath());
         }
+    }
+
+    private double calculateAmountToSpentPerMonth(DreamModel dreamModel) {
+        Log.d(TAG, "calculateAmountToSpentPerMonth() called");
+        double amountDouble = dreamModel.getTargetAmount() - dreamModel.getAmountSpentTillDay();
+        int noOfMonths = monthsBetweenDates(new Date(), new Date(dreamModel.getAchieveDate()));
+        double amountPerMonth = amountDouble / noOfMonths;
+        Log.d(TAG, "calculateAmountToSpentPerMonth() returned: " + amountPerMonth);
+        return amountPerMonth;
     }
 
     private void setImageView(final ImageView mDreamImageView, final String imagePath) {

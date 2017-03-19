@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'dreamManager'
             keyPassword 'binatestation@123'
-            storeFile file('E:/RKR/MyAndroidFiles/GitHub/DreamManager/apkAndKeystore/dreamManager_KeyStore.jks')
+            storeFile file('G:/RKR/MyAndroidFiles/WorkSpace_6/DreamManager/apkAndKeystore/dreamManager_KeyStore.jks')
             storePassword 'binatestation@123'
         }
     }
