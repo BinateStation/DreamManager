@@ -124,10 +124,32 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.MD_action_delete) {
-            actionDelete();
+            deleteConfirmation();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteConfirmation() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(
+                        getString(android.R.string.dialog_alert_title),
+                        "Are you sure, you wan't delete this event ?",
+                        DialogType.POSITIVE_NEGATIVE_BUTTON
+                );
+                alertDialogFragment.show(getSupportFragmentManager(), alertDialogFragment.getTag());
+                alertDialogFragment.setOnClickListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            actionDelete();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void actionDelete() {
@@ -327,10 +349,12 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
                 Bitmap bitmap = BitmapFactory.decodeFile(mDreamModel.getImagePath());
                 int width = mDreamImageView.getWidth();
                 int height = mDreamImageView.getHeight();
-                Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, width, height);
-                mDreamImageView.setImageBitmap(resized);
-                if (resized == null) {
-                    mDreamImageView.setImageDrawable(ContextCompat.getDrawable(mDreamImageView.getContext(), R.drawable.ic_add_a_photo_white_24dp));
+                if (width > 0 && height > 0) {
+                    Bitmap resized = ThumbnailUtils.extractThumbnail(bitmap, width, height);
+                    mDreamImageView.setImageBitmap(resized);
+                    if (resized == null) {
+                        mDreamImageView.setImageDrawable(ContextCompat.getDrawable(mDreamImageView.getContext(), R.drawable.ic_add_a_photo_white_24dp));
+                    }
                 }
             }
         });

@@ -43,11 +43,17 @@ public class AlertDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    public void setOnClickListener(DialogInterface.OnClickListener onClickListener) {
+        this.mOnClickListener = onClickListener;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof DialogInterface.OnClickListener) {
-            mOnClickListener = (DialogInterface.OnClickListener) context;
+        if (mOnClickListener == null) {
+            if (context instanceof DialogInterface.OnClickListener) {
+                mOnClickListener = (DialogInterface.OnClickListener) context;
+            }
         }
     }
 
@@ -100,7 +106,7 @@ public class AlertDialogFragment extends DialogFragment {
                 alertDialogBuilder.setPositiveButton(getString(android.R.string.yes), mOnClickListener);
                 alertDialogBuilder.setNegativeButton(getString(android.R.string.no), mOnClickListener);
             }
-        } else if (dialogType == DialogType.POSITIVE_NEGATIVE_NUTRAL_BUTTON) {
+        } else if (dialogType == DialogType.POSITIVE_NEGATIVE_NEUTRAL_BUTTON) {
             if (mOnClickListener == null) {
                 alertDialogBuilder.setPositiveButton(getString(android.R.string.yes), new DialogInterface.OnClickListener() {
                     @Override

@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DreamManager.iml" filepath="$PROJECT_DIR$/DreamManager.iml" />
       <module fileurl="file://$PROJECT_DIR$/DreamManager.iml" filepath="$PROJECT_DIR$/DreamManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DreamManager.iml" filepath="$PROJECT_DIR$/DreamManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dreamManager/dreamManager.iml" filepath="$PROJECT_DIR$/dreamManager/dreamManager.iml" />
       <module fileurl="file://$PROJECT_DIR$/dreamManager/dreamManager.iml" filepath="$PROJECT_DIR$/dreamManager/dreamManager.iml" />
       <module fileurl="file://$PROJECT_DIR$/dreamManager/dreamManager.iml" filepath="$PROJECT_DIR$/dreamManager/dreamManager.iml" />
     </modules>
