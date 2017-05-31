@@ -30,4 +30,5 @@
     <string name="delete">Delete</string>
     <string name="forgot_password">Forgot password</string>
     <string name="help_me">Help me</string>
+    <string name="delete_confirmation_msg">Are you sure, you wan\'t delete this event ?</string>
 </resources>

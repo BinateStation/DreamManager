@@ -136,7 +136,7 @@ public class DreamActivity extends AppCompatActivity implements View.OnClickList
             public void run() {
                 AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(
                         getString(android.R.string.dialog_alert_title),
-                        "Are you sure, you wan't delete this event ?",
+                        getString(R.string.delete_confirmation_msg),
                         DialogType.POSITIVE_NEGATIVE_BUTTON
                 );
                 alertDialogFragment.show(getSupportFragmentManager(), alertDialogFragment.getTag());
